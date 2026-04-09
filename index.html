@@ -9,7 +9,7 @@
       background: black;
       color: #00ff00;
       font-family: monospace;
-      overflow: hidden;
+      overflow: auto;
     }
 
     canvas {
@@ -24,7 +24,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 35px;
+      font-size: 40px;
     }
 
     .typing {
@@ -43,21 +43,45 @@
       50% { border-color: transparent; }
     }
 
+    /* glitch effect */
+    .glitch {
+      color: white;
+      font-size: 30px;
+      position: relative;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red; }
+      20% { text-shadow: -2px 0 blue; }
+      40% { text-shadow: 2px 2px red; }
+      60% { text-shadow: -2px -2px blue; }
+      80% { text-shadow: 2px 0 red; }
+      100% { text-shadow: 0 0 white; }
+    }
+
     .baixo {
       text-align: center;
-      padding: 40px;
-      color: white;
+      padding: 60px 20px;
     }
 
     .imagens {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      margin-top: 20px;
+      gap: 60px;
+      margin-top: 30px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: 1s;
+    }
+
+    .imagens.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .imagens img {
-      width: 150px;
+      width: 180px;
       border-radius: 10px;
     }
   </style>
@@ -65,25 +89,26 @@
 
 <body>
 
-  <!-- Fundo hacker -->
+  <!-- fundo hacker -->
   <canvas id="matrix"></canvas>
 
-  <!-- Texto inicial -->
+  <!-- topo -->
   <div class="center">
-    <div class="typing">Conta do instagram hackead tinha que ser burra</div>
+    <div class="typing">Bem-vindo 👾</div>
   </div>
 
-  <!-- Parte de baixo -->
+  <!-- parte de baixo -->
   <div class="baixo">
-    <h2>😂 perdeu kkkkkk ninguém mandou confiar</h2>
+    <div class="glitch">😂 perdeu kkkkk ninguém mandou confiar</div>
 
-    <div class="imagens">
+    <div class="imagens" id="imgs">
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg">
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg">
     </div>
   </div>
 
   <script>
+    // efeito matrix
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
 
@@ -119,6 +144,16 @@
     }
 
     setInterval(draw, 33);
+
+    // mostrar imagens ao rolar
+    window.addEventListener("scroll", () => {
+      const imgs = document.getElementById("imgs");
+      const pos = imgs.getBoundingClientRect().top;
+
+      if (pos < window.innerHeight) {
+        imgs.classList.add("show");
+      }
+    });
   </script>
 
 </body>
