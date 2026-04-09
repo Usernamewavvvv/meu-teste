@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Meu Site</title>
+  <title>Hacker Style</title>
 
   <style>
     body {
@@ -9,42 +9,30 @@
       background: black;
       color: #00ff00;
       font-family: monospace;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    .tela {
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .center {
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 32px;
-      text-align: center;
+      font-size: 35px;
     }
 
-    .hidden {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: 1s;
-    }
-
-    .show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .segunda {
-      font-size: 22px;
-      padding: 40px;
-      color: white;
-    }
-
-    /* efeito digitando */
     .typing {
       border-right: 2px solid #00ff00;
       white-space: nowrap;
       overflow: hidden;
       width: 0;
-      animation: typing 3s steps(30, end) forwards, blink 0.5s infinite;
+      animation: typing 3s steps(20, end) forwards, blink 0.5s infinite;
     }
 
     @keyframes typing {
@@ -54,34 +42,84 @@
     @keyframes blink {
       50% { border-color: transparent; }
     }
+
+    .baixo {
+      text-align: center;
+      padding: 40px;
+      color: white;
+    }
+
+    .imagens {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .imagens img {
+      width: 150px;
+      border-radius: 10px;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Tela inicial -->
-  <div class="tela">
-    <div class="typing">SUA CONTA DO INSTAGRAM FOI HACKEADA KKKKKKKKKKK CONFIOU PORQUE QUIS.</div>
+  <!-- Fundo hacker -->
+  <canvas id="matrix"></canvas>
+
+  <!-- Texto inicial -->
+  <div class="center">
+    <div class="typing">Conta do instagram hackead tinha que ser burra</div>
   </div>
 
-  <!-- Segunda parte -->
-  <div class="tela segunda hidden" id="secao2">
-    ⚠️ TINHA QUE SER UM JEGUE.<br><br>
-    Não clique em links suspeitos KKKKKKKKKKKKKKK.
+  <!-- Parte de baixo -->
+  <div class="baixo">
+    <h2>😂 perdeu kkkkkk ninguém mandou confiar</h2>
+
+    <div class="imagens">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg">
+    </div>
   </div>
 
   <script>
-    const secao = document.getElementById("secao2");
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
 
-    window.addEventListener("scroll", () => {
-      const pos = secao.getBoundingClientRect().top;
-      const tela = window.innerHeight;
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-      if (pos < tela - 100) {
-        secao.classList.add("show");
+    const letters = "01";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+
+    for (let i = 0; i < columns; i++) {
+      drops[i] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+          drops[i] = 0;
+
+        drops[i]++;
       }
-    });
+    }
+
+    setInterval(draw, 33);
   </script>
 
-</body><img src="https://via.placeholder.com/300">
+</body>
 </html>
