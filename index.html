@@ -1,159 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <title>Hacker Style</title>
-
+  <meta charset="UTF-8">
+  <title>Frases Motivacionais</title>
   <style>
     body {
-      margin: 0;
-      background: black;
-      color: #00ff00;
-      font-family: monospace;
-      overflow: auto;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    .center {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 40px;
-    }
-
-    .typing {
-      border-right: 2px solid #00ff00;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-      animation: typing 3s steps(20, end) forwards, blink 0.5s infinite;
-    }
-
-    @keyframes typing {
-      to { width: 100%; }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-
-    /* glitch effect */
-    .glitch {
-      color: white;
-      font-size: 30px;
-      position: relative;
-      animation: glitch 1s infinite;
-    }
-
-    @keyframes glitch {
-      0% { text-shadow: 2px 0 red; }
-      20% { text-shadow: -2px 0 blue; }
-      40% { text-shadow: 2px 2px red; }
-      60% { text-shadow: -2px -2px blue; }
-      80% { text-shadow: 2px 0 red; }
-      100% { text-shadow: 0 0 white; }
-    }
-
-    .baixo {
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 60px 20px;
+      background: #f4f4f4;
+      padding: 50px;
     }
 
-    .imagens {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      margin-top: 30px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: 1s;
-    }
-
-    .imagens.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .imagens img {
-      width: 180px;
+    #box {
+      background: white;
+      padding: 30px;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #frase {
+      font-size: 18px;
+      margin-top: 20px;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- fundo hacker -->
-  <canvas id="matrix"></canvas>
-
-  <!-- topo -->
-  <div class="center">
-    <div class="typing">CONTA DO INTAGRAM HACKEADA NINGUEM MANDOU CONFIAR KKKKKKKKKKKKKKK</div>
-  </div>
-
-  <!-- parte de baixo -->
-  <div class="baixo">
-    <div class="glitch">NAO CLICA EM LINKS ESTRANHOS BETINHA</div>
-
-    <div class="imagens" id="imgs">
-      <img<img src="https://www.printables.com/model/609705-giga-chad">
-      <img<img src="https://www.printables.com/model/609705-giga-chad">
-    </div>
+  <div id="box">
+    <h2>💬 Clique para se motivar</h2>
+    <button onclick="gerarFrase()">Gerar frase</button>
+    <p id="frase"></p>
   </div>
 
   <script>
-    // efeito matrix
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+    const frases = [
+      "Acredite em você!",
+      "Nunca desista dos seus sonhos.",
+      "Cada dia é uma nova oportunidade.",
+      "Você é mais forte do que pensa.",
+      "O sucesso vem com a persistência.",
+      "Pequenos passos levam a grandes conquistas."
+    ];
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-
-    const drops = [];
-
-    for (let i = 0; i < columns; i++) {
-      drops[i] = 1;
+    function gerarFrase() {
+      const aleatoria = Math.floor(Math.random() * frases.length);
+      document.getElementById("frase").innerText = frases[aleatoria];
     }
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0F0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-          drops[i] = 0;
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 33);
-
-    // mostrar imagens ao rolar
-    window.addEventListener("scroll", () => {
-      const imgs = document.getElementById("imgs");
-      const pos = imgs.getBoundingClientRect().top;
-
-      if (pos < window.innerHeight) {
-        imgs.classList.add("show");
-      }
-    });
   </script>
 
 </body>
